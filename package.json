@@ -1,0 +1,31 @@
+{
+  "name": "tbc-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/app.ts"
+  },
+  "keywords": [
+    "TBC",
+    "credit",
+    "card",
+    "sdk",
+    "credit",
+    "bank",
+    "payment",
+    "processing",
+    "javascript"
+  ],
+  "author": "Saba Shavidze",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.2"
+  }
+}
