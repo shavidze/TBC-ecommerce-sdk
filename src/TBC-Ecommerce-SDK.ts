@@ -194,4 +194,40 @@ class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
       throw new Error("Failed to complete pre-authorized payment");
     }
   }
+
+  /**
+   * Function to cancel a payment using the TBC Bank API.
+   * @param cancelPaymentData - The data for canceling the payment (body parameter).
+   * @param accessToken - The access token (header).
+   * @returns A promise that resolves with the cancellation details or rejects with an error.
+   */
+  async cancelPayment(
+    cancelPaymentData: CancelPaymentData,
+    accessToken: string
+  ): Promise<any> {
+    const url = `${this.baseURL}/tpay/payments/cancel`;
+    const headers = {
+      Accept: "application/json",
+      apikey: this.apiKey,
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const response: AxiosResponse<any> = await axios.post(
+        url,
+        cancelPaymentData,
+        { headers }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      // Explicitly cast 'error' to AxiosError to access detailed error information
+      if (axios.isAxiosError(error)) {
+        console.error("Failed to cancel payment:", error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+      throw new Error("Failed to cancel payment");
+    }
+  }
 }
