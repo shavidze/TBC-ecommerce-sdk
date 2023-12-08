@@ -115,4 +115,83 @@ class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
       throw new Error("Failed to get checkout payment details");
     }
   }
+
+  /**
+   * Function to cancel a checkout payment using the TBC Bank API.
+   * @param payId - The payment ID (path parameter).
+   * @param amount - The amount to cancel (body parameter).
+   * @param accessToken - The access token (header).
+   * @returns A promise that resolves with the cancellation details or rejects with an error.
+   */
+  async cancelCheckoutPayment(
+    payId: string,
+    amount: number,
+    accessToken: string
+  ): Promise<any> {
+    const url = `${this.baseURL}/payments/${payId}/cancel`;
+    const headers = {
+      Accept: "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      apikey: this.apiKey,
+      "Content-Type": "application/json",
+    };
+
+    const body = JSON.stringify({ amount });
+
+    try {
+      const response: AxiosResponse<any> = await axios.post(url, body, {
+        headers,
+      });
+      return response.data;
+    } catch (error: unknown) {
+      // Explicitly cast 'error' to AxiosError to access detailed error information
+      if (axios.isAxiosError(error)) {
+        console.error("Failed to cancel checkout payment:", error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+      throw new Error("Failed to cancel checkout payment");
+    }
+  }
+
+  /**
+   * Function to complete a pre-authorized payment using the TBC Bank API.
+   * @param payId - The payment ID (path parameter).
+   * @param amount - The amount to be confirmed (body parameter).
+   * @param accessToken - The access token (header).
+   * @returns A promise that resolves with the completion details or rejects with an error.
+   */
+  async completePreAuthorizedPayment(
+    payId: string,
+    amount: number,
+    accessToken: string
+  ): Promise<any> {
+    const url = `${this.baseURL}/payments/${payId}/completion`;
+    const headers = {
+      Accept: "application/json",
+      Authorization: `Bearer ${accessToken}`,
+      apikey: this.apiKey,
+      "Content-Type": "application/json",
+    };
+
+    const body = JSON.stringify({ amount });
+
+    try {
+      const response: AxiosResponse<any> = await axios.post(url, body, {
+        headers,
+      });
+      return response.data;
+    } catch (error: unknown) {
+      // Explicitly cast 'error' to AxiosError to access detailed error information
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Failed to complete pre-authorized payment:",
+          error.message
+        );
+      } else {
+        console.error("Unexpected error:", error);
+      }
+      throw new Error("Failed to complete pre-authorized payment");
+    }
+  }
 }
