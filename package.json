@@ -2,8 +2,7 @@
   "name": "tbc-sdk",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
-  "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "ts-node src/app.ts"
   },

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import {
   AccessTokenResponse,
+  CreatePaymentData,
   ExecuteReccuringPaymentData,
   TbcEcommerseSDKInterface,
 } from "./interfaces";
@@ -269,3 +270,5 @@ class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
     }
   }
 }
+
+module.exports = TbcEcommerseSDK;
