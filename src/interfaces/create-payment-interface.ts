@@ -12,7 +12,7 @@ interface InstallmentProduct {
   quantity: number;
 }
 
-interface PaymentData {
+interface CreatePaymentData {
   amount: AmountObject;
   returnurl: string;
   extra: string;

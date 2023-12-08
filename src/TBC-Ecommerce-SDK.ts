@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from "axios";
-import { AccessTokenResponse, TbcEcommerseSDKInterface } from "./interfaces";
+import {
+  AccessTokenResponse,
+  ExecuteReccuringPaymentData,
+  TbcEcommerseSDKInterface,
+} from "./interfaces";
 
 class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
   private baseURL: string;
@@ -59,7 +63,7 @@ class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
    * @returns A promise that resolves with the payment details or rejects with an error.
    */
   async createPayment(
-    paymentData: PaymentData,
+    paymentData: CreatePaymentData,
     accessToken: string
   ): Promise<any> {
     const url = `${this.baseURL}/payments`;
@@ -196,16 +200,16 @@ class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
   }
 
   /**
-   * Function to cancel a payment using the TBC Bank API.
-   * @param cancelPaymentData - The data for canceling the payment (body parameter).
+   * Function to initiate a recurring payment using the TBC Bank API.
+   * @param executeRecurringPaymentData - The data for initiating the recurring payment (body parameter).
    * @param accessToken - The access token (header).
-   * @returns A promise that resolves with the cancellation details or rejects with an error.
+   * @returns A promise that resolves with the execution details or rejects with an error.
    */
-  async cancelPayment(
-    cancelPaymentData: CancelPaymentData,
+  async executeRecurringPayment(
+    executeRecurringPaymentData: ExecuteReccuringPaymentData,
     accessToken: string
   ): Promise<any> {
-    const url = `${this.baseURL}/tpay/payments/cancel`;
+    const url = `${this.baseURL}/tpay/payments/execution`;
     const headers = {
       Accept: "application/json",
       apikey: this.apiKey,
@@ -216,18 +220,52 @@ class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
     try {
       const response: AxiosResponse<any> = await axios.post(
         url,
-        cancelPaymentData,
+        executeRecurringPaymentData,
         { headers }
       );
       return response.data;
     } catch (error: unknown) {
       // Explicitly cast 'error' to AxiosError to access detailed error information
       if (axios.isAxiosError(error)) {
-        console.error("Failed to cancel payment:", error.message);
+        console.error("Failed to execute recurring payment:", error.message);
       } else {
         console.error("Unexpected error:", error);
       }
-      throw new Error("Failed to cancel payment");
+      throw new Error("Failed to execute recurring payment");
+    }
+  }
+
+  /**
+   * Function to delete a recurring payment using the TBC Bank API.
+   * @param recId - The recurring payment ID (path parameter).
+   * @param accessToken - The access token (header).
+   * @returns A promise that resolves with the deletion details or rejects with an error.
+   */
+  async deleteRecurringPayment(
+    recId: string,
+    accessToken: string
+  ): Promise<any> {
+    const url = `${this.baseURL}/tpay/payments/${recId}/delete`;
+    const headers = {
+      Accept: "application/json",
+      apikey: this.apiKey,
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const response: AxiosResponse<any> = await axios.post(url, null, {
+        headers,
+      });
+      return response.data;
+    } catch (error: unknown) {
+      // Explicitly cast 'error' to AxiosError to access detailed error information
+      if (axios.isAxiosError(error)) {
+        console.error("Failed to delete recurring payment:", error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+      throw new Error("Failed to delete recurring payment");
     }
   }
 }
