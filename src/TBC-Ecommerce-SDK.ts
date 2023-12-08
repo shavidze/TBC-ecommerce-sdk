@@ -6,11 +6,12 @@ import {
   TbcEcommerseSDKInterface,
 } from "./interfaces";
 
-class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
+export class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
   private baseURL: string;
   private apiKey: string;
   private clientId: string;
   private clientSecret: string;
+  private accessToken: string | null = null;
 
   constructor(apiKey: string, clientId: string, clientSecret: string) {
     this.apiKey = apiKey;
@@ -270,5 +271,3 @@ class TbcEcommerseSDK implements TbcEcommerseSDKInterface {
     }
   }
 }
-
-module.exports = TbcEcommerseSDK;
